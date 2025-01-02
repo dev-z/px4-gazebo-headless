@@ -2,12 +2,12 @@ name: Publish Docker
 on:
   push:
     branches:
-      - 'master'
+      - "master"
     tags:
-      - 'v*'
+      - "v*"
   pull_request:
     branches:
-      - '*'
+      - "*"
 
 jobs:
   main:
@@ -35,7 +35,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            jonasvautherin/px4-gazebo-headless
+            izafarskyflow/px4-gazebo-headless
           # Configure tags:
           #   `master` branch -> `latest`
           #   `v{xx.yy.zz}` tag -> `{xx.yy.zz}`

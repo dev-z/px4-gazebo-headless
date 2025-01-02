@@ -1,6 +1,5 @@
 [![Docker pulls](https://img.shields.io/docker/pulls/jonasvautherin/px4-gazebo-headless)](https://hub.docker.com/r/jonasvautherin/px4-gazebo-headless/)[![DockerHub version](https://img.shields.io/docker/v/jonasvautherin/px4-gazebo-headless/1.15.2)](https://hub.docker.com/r/jonasvautherin/px4-gazebo-headless/)
 
-
 # PX4-Gazebo simulator (headless)
 
 ## Quickstart
@@ -14,10 +13,10 @@ Note that the following commands are referring to the latest supported release o
 In this mode, the simulator will be available from your host (e.g. run the following command, and QGroundControl running on your computer will connect automatically).
 
 ```
-docker run --rm -it jonasvautherin/px4-gazebo-headless:1.15.2
+docker run -p 18570:18570/udp -it izafarskyflow/px4-gazebo-headless
 ```
 
-In this configuration, the container will send MAVLink to the host on ports 14550 (for QGC) and 14540 (for e.g. MAVSDK).
+In this configuration, the container will send MAVLink to the host on ports 18570 (for QGC) and 14540 (for e.g. MAVSDK).
 
 ### Run with a custom IP for the second MAVLink interface
 
@@ -51,9 +50,9 @@ docker run --rm -it -p 8554:8554 jonasvautherin/px4-gazebo-headless:1.15.2 -v ty
 
 The start location can be set when running the container by setting the following environment variables:
 
-* __PX4_HOME_LAT:__ starting latitude of the drone.
-* __PX4_HOME_LON:__ starting longitude of the drone.
-* __PX4_HOME_ALT:__ starting altitude of the drone.
+- **PX4_HOME_LAT:** starting latitude of the drone.
+- **PX4_HOME_LON:** starting longitude of the drone.
+- **PX4_HOME_ALT:** starting altitude of the drone.
 
 For instance:
 
@@ -73,9 +72,9 @@ docker build https://github.com/JonasVautherin/px4-gazebo-headless.git#master -t
 
 The starting location of the drone can be set at build time using build arguments (by default the drone is in Zuerich). The possible build arguments are:
 
-* __HOME_LAT:__ starting latitude of the drone (defaults to 47.397742).
-* __HOME_LON:__ starting longitude of the drone (defaults to 8.545594).
-* __HOME_ALT:__ starting altitude of the drone (defaults to 488.0).
+- **HOME_LAT:** starting latitude of the drone (defaults to 47.397742).
+- **HOME_LON:** starting longitude of the drone (defaults to 8.545594).
+- **HOME_ALT:** starting altitude of the drone (defaults to 488.0).
 
 Build arguments can be added to the above command line as follows:
 
@@ -87,7 +86,7 @@ docker build https://github.com/JonasVautherin/px4-gazebo-headless.git#master --
 
 #### I cannot build the image
 
-__Problem:__
+**Problem:**
 
 Building the image fails with the following error:
 
@@ -98,7 +97,7 @@ with preprocessed source if appropriate.
 See <file:///usr/share/doc/gcc-5/README.Bugs> for instructions.
 ```
 
-__Possible solution:__
+**Possible solution:**
 
 If running on Docker for Mac, try to increase the memory in _Preferences > Advanced > Memory_. Increasing from 2GB to 4GB solved the problem for me.
 
@@ -106,11 +105,11 @@ If running on Docker for Windows, you can do it by right clicking on the Docker 
 
 #### It doesn't work with Docker Toolbox
 
-__Problem:__
+**Problem:**
 
 Using Docker Toolbox (instead of Docker for Windows/Mac, for instance on Windows 10 Home), px4-gazebo-headless is not detected by QGroundControl running on the host.
 
-__Solution:__
+**Solution:**
 
 The container automatically detects if it is running inside Docker for Windows/Mac, but not if it is inside Docker Toolbox (let me know if you have a way to detect this). However, it seems that in Docker Toolbox, the host is assigned 10.0.2.2 by default (I am guessing this default is coming from VirtualBox). Therefore it works to redirect to this IP, as described above. For instance:
 
@@ -120,14 +119,19 @@ docker run --rm -it jonasvautherin/px4-gazebo-headless:1.15.2 10.0.2.2 10.0.2.2
 
 ### It doesn't connect with Podman
 
-__Problem:__
+**Problem:**
 
 Using podman, the MAVLink traffic for port 14550 (and 14540) does not seem to arrive in QGroundControl (and MAVSDK).
 
-__Solution:__
+**Solution:**
 
 Try to use the "host network" mode and set the MAVLink interfaces for both interfaces.
 
 ```
 podman run --rm --network host -it jonasvautherin/px4-gazebo-headless:1.15.2 127.0.0.1 127.0.0.1
+```
+
+```
+docker build -t izafarskyflow/px4-gazebo-headless .
+docker run -p 18570:18570/udp -it izafarskyflow/px4-gazebo-headless
 ```
