@@ -6,6 +6,8 @@ ENV FIRMWARE_DIR=${WORKSPACE_DIR}/Firmware
 ENV DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
 ENV DISPLAY=:99
 ENV LANG=C.UTF-8
+ENV HEADLESS=1
+ENV NO_PXH=1
 
 RUN apt-get update && \
     apt-get install -y bc \

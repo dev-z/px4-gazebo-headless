@@ -8,12 +8,12 @@ The Docker images resulting from this repo are available on [Docker Hub](https:/
 
 Note that the following commands are referring to the latest supported release of PX4, which is currently v1.15.2.
 
-### Run in BROADCAST mode:
+### Run:
 
 In this mode, the simulator will be available from your host (e.g. run the following command, and QGroundControl running on your computer will connect automatically).
 
 ```
-docker run -p 18570:18570/udp -it izafarskyflow/px4-gazebo-headless
+docker run --rm -it --network host --name sim izafarskyflow/px4-gazebo-headless
 ```
 
 In this configuration, the container will send MAVLink to the host on ports 18570 (for QGC) and 14540 (for e.g. MAVSDK).
@@ -133,5 +133,4 @@ podman run --rm --network host -it jonasvautherin/px4-gazebo-headless:1.15.2 127
 
 ```
 docker build -t izafarskyflow/px4-gazebo-headless .
-docker run -p 18570:18570/udp -it izafarskyflow/px4-gazebo-headless
 ```
